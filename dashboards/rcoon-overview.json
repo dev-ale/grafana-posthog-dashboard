@@ -1,0 +1,2172 @@
+{
+  "uid": "rcoon-overview",
+  "title": "rcoon Overview",
+  "tags": [
+    "rcoon",
+    "posthog",
+    "sentry"
+  ],
+  "timezone": "browser",
+  "editable": true,
+  "refresh": "15m",
+  "time": {
+    "from": "now-30d",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "type": "row",
+      "title": "North Star",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "collapsed": false
+    },
+    {
+      "id": 1,
+      "title": "Paying Subscribers",
+      "description": "Total unique users who completed a purchase",
+      "type": "stat",
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 0,
+        "y": 1
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "posthog"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "green"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "textMode": "value",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"SELECT count(DISTINCT person_id) as paying_subscribers FROM events WHERE event = 'purchase_completed' AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00'))\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Paying Subscribers",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Active Subscribers",
+      "description": "Users with monthly or yearly subscription purchases",
+      "type": "stat",
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 8,
+        "y": 1
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "posthog"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "green"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "textMode": "value",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"SELECT count(DISTINCT person_id) as paying_users FROM events WHERE event = 'purchase_completed' AND properties.plan_id IN ('monthly', 'yearly') AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00'))\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "MRR",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Total Users",
+      "description": "All-time unique users",
+      "type": "stat",
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 16,
+        "y": 1
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "posthog"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "blue"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "textMode": "value",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"SELECT count(DISTINCT person_id) as total_users FROM events WHERE event = 'app_initialized' AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00'))\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Total Users",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "row",
+      "title": "Acquisition",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 7
+      },
+      "collapsed": false
+    },
+    {
+      "id": 10,
+      "title": "Daily New Users",
+      "description": "Users who triggered app_initialized per day",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "posthog"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "bars",
+            "fillOpacity": 80,
+            "gradientMode": "scheme"
+          },
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "blue"
+          }
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"SELECT toDate(timestamp) as day, count(DISTINCT person_id) as new_users FROM events WHERE event = 'app_initialized' AND timestamp >= toDateTime(${__from:date:seconds}) AND timestamp < toDateTime(${__to:date:seconds})  AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) GROUP BY day ORDER BY day\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Time",
+              "type": "timestamp"
+            },
+            {
+              "selector": "1",
+              "text": "New Users",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "title": "Daily Installs",
+      "description": "app_initialized events per day",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "posthog"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "bars",
+            "fillOpacity": 80,
+            "gradientMode": "scheme"
+          },
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "green"
+          }
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"SELECT toDate(timestamp) as day, count(DISTINCT person_id) as installs FROM events WHERE event = 'app_initialized' AND timestamp >= toDateTime(${__from:date:seconds}) AND timestamp < toDateTime(${__to:date:seconds})  AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) GROUP BY day ORDER BY day\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Time",
+              "type": "timestamp"
+            },
+            {
+              "selector": "1",
+              "text": "Cumulative Users",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "row",
+      "title": "Activation (Onboarding)",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "collapsed": false
+    },
+    {
+      "id": 20,
+      "title": "Onboarding Funnel",
+      "description": "Drop-off through onboarding steps (last 90 days)",
+      "type": "barchart",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 17
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "posthog"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "horizontal",
+        "xTickLabelRotation": 0,
+        "barWidth": 0.8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"SELECT step, users FROM (SELECT 1 as ord, 'Installed' as step, count(DISTINCT person_id) as users FROM events WHERE event = 'app_initialized' AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) UNION ALL SELECT 2, 'Onboarding Started', count(DISTINCT person_id) FROM events WHERE event = 'onboarding_page_viewed' AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) UNION ALL SELECT 3, 'Permission Granted', count(DISTINCT person_id) FROM events WHERE event = 'onboarding_permission_granted' AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) UNION ALL SELECT 4, 'Scan Completed', count(DISTINCT person_id) FROM events WHERE event = 'onboarding_scan_completed' AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) UNION ALL SELECT 5, 'Onboarding Completed', count(DISTINCT person_id) FROM events WHERE event = 'onboarding_completed' AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) UNION ALL SELECT 6, 'First Swipe', count(DISTINCT person_id) FROM events WHERE event = 'first_swipe' AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00'))) ORDER BY ord\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Step",
+              "type": "string"
+            },
+            {
+              "selector": "1",
+              "text": "Users",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "title": "Onboarding Completion Rate",
+      "description": "% of installs that completed onboarding (90d)",
+      "type": "gauge",
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 17
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "posthog"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "min": 0,
+          "max": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 0.3
+              },
+              {
+                "color": "yellow",
+                "value": 0.5
+              },
+              {
+                "color": "green",
+                "value": 0.7
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"SELECT (SELECT count(DISTINCT person_id) FROM events WHERE event = 'onboarding_completed' AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00'))) * 1.0 / (SELECT count(DISTINCT person_id) FROM events WHERE event = 'app_initialized' AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00'))) as rate\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Completion Rate",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "title": "% Paywall Seen Day 1",
+      "description": "Users who saw the paywall on their first day",
+      "type": "stat",
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 17
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "posthog"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "orange"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "orange",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "textMode": "value",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"WITH new_users AS (SELECT person_id, min(timestamp) as first_seen FROM events WHERE event = 'app_initialized' AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) GROUP BY person_id), paywall_day1 AS (SELECT DISTINCT e.person_id FROM events e JOIN new_users n ON e.person_id = n.person_id WHERE e.event = 'paywall_shown' AND e.timestamp <= n.first_seen + INTERVAL 1 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00'))) SELECT count() / (SELECT count() FROM new_users) as rate FROM paywall_day1\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Paywall Day 1 %",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "row",
+      "title": "Monetization",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 33
+      },
+      "collapsed": false
+    },
+    {
+      "id": 30,
+      "title": "Monetization Funnel",
+      "description": "Paywall \u2192 Purchase funnel (last 90 days)",
+      "type": "barchart",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 34
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "posthog"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "horizontal",
+        "barWidth": 0.8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"SELECT step, users FROM (SELECT 1 as ord, 'Paywall Shown' as step, count(DISTINCT person_id) as users FROM events WHERE event = 'paywall_shown' AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) UNION ALL SELECT 2, 'Plan Selected', count(DISTINCT person_id) FROM events WHERE event = 'paywall_plan_selected' AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) UNION ALL SELECT 3, 'Purchase Started', count(DISTINCT person_id) FROM events WHERE event = 'purchase_started' AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) UNION ALL SELECT 4, 'Purchase Completed', count(DISTINCT person_id) FROM events WHERE event = 'purchase_completed' AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00'))) ORDER BY ord\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Step",
+              "type": "string"
+            },
+            {
+              "selector": "1",
+              "text": "Users",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "title": "Trial Starts / Day",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 34
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "posthog"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "bars",
+            "fillOpacity": 80
+          },
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "purple"
+          }
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"SELECT toDate(timestamp) as day, count(DISTINCT person_id) as trials FROM events WHERE event = 'purchase_started' AND timestamp >= toDateTime(${__from:date:seconds}) AND timestamp < toDateTime(${__to:date:seconds})  AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) GROUP BY day ORDER BY day\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Time",
+              "type": "timestamp"
+            },
+            {
+              "selector": "1",
+              "text": "Trial Starts",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "title": "Trial \u2192 Paid Conversion",
+      "type": "gauge",
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 42
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "posthog"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "min": 0,
+          "max": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 0.1
+              },
+              {
+                "color": "yellow",
+                "value": 0.3
+              },
+              {
+                "color": "green",
+                "value": 0.5
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"SELECT count(DISTINCT if(event = 'purchase_completed', person_id, NULL)) * 1.0 / count(DISTINCT if(event = 'purchase_started', person_id, NULL)) as rate FROM events WHERE event IN ('purchase_started', 'purchase_completed') AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00'))\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Conversion Rate",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "title": "Monthly vs Yearly Plan Split",
+      "type": "piechart",
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 42
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "posthog"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "pieType": "donut"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"SELECT properties.plan_id as plan, count(DISTINCT person_id) as users FROM events WHERE event = 'purchase_completed' AND timestamp >= now() - INTERVAL 90 DAY  AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) GROUP BY plan ORDER BY users DESC\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Plan",
+              "type": "string"
+            },
+            {
+              "selector": "1",
+              "text": "Users",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "title": "MRR Trend",
+      "description": "Monthly Recurring Revenue over time (from purchase events)",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 42
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "posthog"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD",
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 30,
+            "gradientMode": "scheme",
+            "lineWidth": 2
+          },
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "green"
+          }
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"SELECT toStartOfWeek(timestamp) as week, count(DISTINCT person_id) as purchases FROM events WHERE event = 'purchase_completed' AND timestamp >= toDateTime(${__from:date:seconds}) AND timestamp < toDateTime(${__to:date:seconds})  AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) GROUP BY week ORDER BY week\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Time",
+              "type": "timestamp"
+            },
+            {
+              "selector": "1",
+              "text": "Purchases",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "row",
+      "title": "Engagement",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 58
+      },
+      "collapsed": false
+    },
+    {
+      "id": 40,
+      "title": "DAU (Daily Active Users)",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 59
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "posthog"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "lineWidth": 2
+          },
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "blue"
+          }
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"SELECT toDate(timestamp) as day, count(DISTINCT person_id) as dau FROM events WHERE event = 'Application Opened' AND timestamp >= toDateTime(${__from:date:seconds}) AND timestamp < toDateTime(${__to:date:seconds})  AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) GROUP BY day ORDER BY day\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Time",
+              "type": "timestamp"
+            },
+            {
+              "selector": "1",
+              "text": "DAU",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "title": "WAU / MAU",
+      "description": "Weekly and Monthly Active Users",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 59
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "posthog"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "lineWidth": 2
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "WAU"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "orange"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MAU"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "purple"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "targets": [
+        {
+          "refId": "WAU",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"SELECT toStartOfWeek(timestamp) as week, count(DISTINCT person_id) as wau FROM events WHERE event = 'Application Opened' AND timestamp >= toDateTime(${__from:date:seconds}) AND timestamp < toDateTime(${__to:date:seconds})  AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) GROUP BY week ORDER BY week\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Time",
+              "type": "timestamp"
+            },
+            {
+              "selector": "1",
+              "text": "WAU",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "refId": "MAU",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"SELECT toStartOfMonth(timestamp) as month, count(DISTINCT person_id) as mau FROM events WHERE event = 'Application Opened' AND timestamp >= toDateTime(${__from:date:seconds}) AND timestamp < toDateTime(${__to:date:seconds})  AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) GROUP BY month ORDER BY month\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Time",
+              "type": "timestamp"
+            },
+            {
+              "selector": "1",
+              "text": "MAU",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "title": "Feature Usage (30d)",
+      "description": "Unique users per feature in last 30 days",
+      "type": "barchart",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 67
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "posthog"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "horizontal",
+        "barWidth": 0.8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"SELECT feature, users FROM (SELECT 1 as ord, 'Blur Scan' as feature, count(DISTINCT person_id) as users FROM events WHERE event = 'combined_scan_completed' AND properties.cancelled != 'true' AND properties.blurry_count > 0 AND timestamp >= now() - INTERVAL 30 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) UNION ALL SELECT 2, 'Duplicate Scan', count(DISTINCT person_id) FROM events WHERE event = 'combined_scan_completed' AND properties.cancelled != 'true' AND properties.duplicate_group_count > 0 AND timestamp >= now() - INTERVAL 30 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) UNION ALL SELECT 3, 'Swipe Cleaning', count(DISTINCT person_id) FROM events WHERE event = 'swipe_session_summary' AND toFloat(properties.total_media_count) >= 100 AND timestamp >= now() - INTERVAL 30 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) UNION ALL SELECT 4, 'Video Feed', count(DISTINCT person_id) FROM events WHERE event = 'video_feed_session_summary' AND timestamp >= now() - INTERVAL 30 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) UNION ALL SELECT 5, 'Album Cleaning', count(DISTINCT person_id) FROM events WHERE event = 'album_tutorial_completed' AND timestamp >= now() - INTERVAL 30 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00'))) ORDER BY ord\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Feature",
+              "type": "string"
+            },
+            {
+              "selector": "1",
+              "text": "Users",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "title": "Avg Photos Reviewed / Session",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 67
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "posthog"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "blue"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "textMode": "value",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"SELECT round(avg(properties.reviewed_count), 1) as avg_reviewed FROM events WHERE event = 'swipe_session_summary' AND toFloat(properties.total_media_count) >= 100 AND timestamp >= now() - INTERVAL 30 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00'))\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Avg Reviewed",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "title": "Total Photos Deleted",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 67
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "posthog"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "red"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "textMode": "value",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"SELECT sum(properties.deleted_count) as total_deleted FROM events WHERE event = 'photos_deleted' AND timestamp >= now() - INTERVAL 30 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00'))\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Photos Deleted",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "title": "Space Freed (GB)",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 71
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "posthog"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "decgbytes",
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "green"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "textMode": "value",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"SELECT round(sum(properties.freed_bytes) / 1073741824, 2) as gb_freed FROM events WHERE event = 'photos_deleted' AND timestamp >= now() - INTERVAL 30 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00'))\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Space Freed (GB)",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "title": "Stickiness (DAU/MAU)",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 71
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "posthog"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "purple"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "textMode": "value",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"WITH dau AS (SELECT count(DISTINCT person_id) as cnt FROM events WHERE event = 'Application Opened' AND toDate(timestamp) = today() AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00'))), mau AS (SELECT count(DISTINCT person_id) as cnt FROM events WHERE event = 'Application Opened' AND timestamp >= now() - INTERVAL 30 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00'))) SELECT dau.cnt / mau.cnt as stickiness FROM dau, mau\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Stickiness",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "row",
+      "title": "Health",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 75
+      },
+      "collapsed": false
+    },
+    {
+      "id": 50,
+      "title": "Sentry Unresolved Issues",
+      "type": "table",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 76
+      },
+      "datasource": {
+        "type": "grafana-sentry-datasource",
+        "uid": "sentry"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-sentry-datasource",
+            "uid": "sentry"
+          },
+          "queryType": "issues",
+          "issuesQuery": "is:unresolved",
+          "issuesSort": "freq",
+          "issuesLimit": 20,
+          "projectIds": [],
+          "environments": []
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "title": "App Version Distribution (7d)",
+      "type": "piechart",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 76
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "posthog"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right"
+        },
+        "pieType": "donut"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"SELECT properties.$app_version as version, count(DISTINCT person_id) as users FROM events WHERE event = 'Application Opened' AND timestamp >= now() - INTERVAL 7 DAY AND properties.$app_version IS NOT NULL  AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) GROUP BY version ORDER BY users DESC LIMIT 10\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Version",
+              "type": "string"
+            },
+            {
+              "selector": "1",
+              "text": "Users",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "row",
+      "title": "Full Funnel Waterfall",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 84
+      },
+      "collapsed": false
+    },
+    {
+      "id": 60,
+      "title": "Install \u2192 Paid Waterfall (90d)",
+      "description": "Complete user journey funnel",
+      "type": "barchart",
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 85
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "posthog"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "horizontal",
+        "barWidth": 0.7
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"SELECT step, users FROM (SELECT 1 as ord, '1. Installed' as step, count(DISTINCT person_id) as users FROM events WHERE event = 'app_initialized' AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) UNION ALL SELECT 2, '2. Onboarding Completed', count(DISTINCT person_id) FROM events WHERE event = 'onboarding_completed' AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) UNION ALL SELECT 3, '3. First Swipe', count(DISTINCT person_id) FROM events WHERE event = 'first_swipe' AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) UNION ALL SELECT 4, '4. Scan Completed', count(DISTINCT person_id) FROM events WHERE event = 'combined_scan_completed' AND properties.cancelled != 'true' AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) UNION ALL SELECT 5, '5. First Deletion', count(DISTINCT person_id) FROM events WHERE event = 'first_deletion' AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) UNION ALL SELECT 6, '6. Paywall Shown', count(DISTINCT person_id) FROM events WHERE event = 'paywall_shown' AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) UNION ALL SELECT 7, '7. Purchase Started', count(DISTINCT person_id) FROM events WHERE event = 'purchase_started' AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) UNION ALL SELECT 8, '8. Purchase Completed', count(DISTINCT person_id) FROM events WHERE event = 'purchase_completed' AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00'))) ORDER BY ord\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Step",
+              "type": "string"
+            },
+            {
+              "selector": "1",
+              "text": "Users",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "row",
+      "title": "Cohort Retention",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 95
+      },
+      "collapsed": false
+    },
+    {
+      "id": 70,
+      "title": "Weekly Cohort Retention",
+      "description": "Retention by install week cohort",
+      "type": "table",
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 96
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "posthog"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "center"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Cohort"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 120
+              }
+            ]
+          }
+        ]
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"WITH cohorts AS (SELECT person_id, toStartOfWeek(min(timestamp)) as cohort_week FROM events WHERE event = 'app_initialized' AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) GROUP BY person_id), activity AS (SELECT e.person_id, c.cohort_week, floor(dateDiff('day', c.cohort_week, toDate(e.timestamp)) / 7) as week_number FROM events e JOIN cohorts c ON e.person_id = c.person_id WHERE e.event = 'Application Opened' AND e.timestamp >= now() - INTERVAL 90 DAY) SELECT toString(cohort_week) as Cohort, count(DISTINCT if(week_number = 0, person_id, NULL)) as W0, count(DISTINCT if(week_number = 1, person_id, NULL)) as W1, count(DISTINCT if(week_number = 2, person_id, NULL)) as W2, count(DISTINCT if(week_number = 3, person_id, NULL)) as W3, count(DISTINCT if(week_number = 4, person_id, NULL)) as W4 FROM activity GROUP BY cohort_week ORDER BY cohort_week\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Cohort",
+              "type": "string"
+            },
+            {
+              "selector": "1",
+              "text": "W0",
+              "type": "number"
+            },
+            {
+              "selector": "2",
+              "text": "W1",
+              "type": "number"
+            },
+            {
+              "selector": "3",
+              "text": "W2",
+              "type": "number"
+            },
+            {
+              "selector": "4",
+              "text": "W3",
+              "type": "number"
+            },
+            {
+              "selector": "5",
+              "text": "W4",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "title": "Paywall Shown by Type",
+      "description": "Which paywalls are displayed most",
+      "type": "piechart",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 50
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "posthog"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "values": [
+            "value",
+            "percent"
+          ]
+        },
+        "pieType": "donut"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"SELECT properties.paywall_type as paywall, count(DISTINCT person_id) as users FROM events WHERE event = 'paywall_shown' AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) GROUP BY paywall HAVING paywall NOT IN ('feature', 'soft') ORDER BY users DESC\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Paywall",
+              "type": "string"
+            },
+            {
+              "selector": "1",
+              "text": "Users",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "title": "Paywall Conversion by Type",
+      "description": "Shown \u2192 Purchased conversion rate per paywall type",
+      "type": "barchart",
+      "gridPos": {
+        "h": 8,
+        "w": 16,
+        "x": 8,
+        "y": 50
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "posthog"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "unit": "percentunit",
+          "min": 0,
+          "max": 1
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "horizontal",
+        "barWidth": 0.7,
+        "showValue": "always"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"SELECT shown.paywall as paywall, if(shown.users > 0, purchased.users * 1.0 / shown.users, 0) as conversion_rate FROM (SELECT properties.paywall_type as paywall, count(DISTINCT person_id) as users FROM events WHERE event = 'paywall_shown' AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) GROUP BY paywall HAVING paywall NOT IN ('feature', 'soft')) as shown LEFT JOIN (SELECT properties.paywall_type as paywall, count(DISTINCT person_id) as users FROM events WHERE event = 'purchase_completed' AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) GROUP BY paywall) as purchased ON shown.paywall = purchased.paywall ORDER BY conversion_rate DESC\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Paywall",
+              "type": "string"
+            },
+            {
+              "selector": "1",
+              "text": "Conversion Rate",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "title": "Install \u2192 Trial Split",
+      "description": "Of all users who installed, how many started a trial vs didn't",
+      "type": "piechart",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 25
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "posthog"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "values": [
+            "value",
+            "percent"
+          ]
+        },
+        "pieType": "donut"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"SELECT label, users FROM (SELECT 1 as ord, 'Started Trial' as label, count(DISTINCT person_id) as users FROM events WHERE event = 'purchase_started' AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) UNION ALL SELECT 2, 'No Trial', (SELECT count(DISTINCT person_id) FROM events WHERE event = 'app_initialized' AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00'))) - count(DISTINCT person_id) as users FROM events WHERE event = 'purchase_started' AND timestamp >= now() - INTERVAL 90 DAY AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00'))) ORDER BY ord\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Segment",
+              "type": "string"
+            },
+            {
+              "selector": "1",
+              "text": "Users",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "title": "Trial Start Rate",
+      "description": "% of installs that started a trial",
+      "type": "gauge",
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 8,
+        "y": 25
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "posthog"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "min": 0,
+          "max": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 0.1
+              },
+              {
+                "color": "yellow",
+                "value": 0.2
+              },
+              {
+                "color": "green",
+                "value": 0.4
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"SELECT (SELECT count(DISTINCT person_id) FROM events WHERE event = 'purchase_started' AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00'))) * 1.0 / (SELECT count(DISTINCT person_id) FROM events WHERE event = 'app_initialized' AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00'))) as rate\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Trial Start Rate",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "title": "Daily: Installs vs Trial Starts",
+      "description": "Side-by-side daily comparison",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 10,
+        "x": 14,
+        "y": 25
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "posthog"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "bars",
+            "fillOpacity": 80,
+            "stacking": {
+              "mode": "none"
+            }
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Installs"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "blue"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Trial Starts"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "green"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "targets": [
+        {
+          "refId": "installs",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"SELECT toDate(timestamp) as day, count(DISTINCT person_id) as installs FROM events WHERE event = 'app_initialized' AND timestamp >= toDateTime(${__from:date:seconds}) AND timestamp < toDateTime(${__to:date:seconds})  AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) GROUP BY day ORDER BY day\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Time",
+              "type": "timestamp"
+            },
+            {
+              "selector": "1",
+              "text": "Installs",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "refId": "trials",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "posthog"
+          },
+          "type": "json",
+          "source": "url",
+          "url": "https://us.posthog.com/api/projects/308466/query",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw-body",
+            "body_content_type": "application/json",
+            "data": "{\"query\": {\"kind\": \"HogQLQuery\", \"query\": \"SELECT toDate(timestamp) as day, count(DISTINCT person_id) as trials FROM events WHERE event = 'purchase_started' AND timestamp >= toDateTime(${__from:date:seconds}) AND timestamp < toDateTime(${__to:date:seconds})  AND ('${install_source}' = 'all' OR properties.install_source = '${install_source}' OR ('${install_source}' = 'testflight' AND properties.install_source = 'app_store')) AND ('${install_source}' != 'app_store' OR timestamp >= toDateTime('2026-03-18 20:00:00')) GROUP BY day ORDER BY day\"}}"
+          },
+          "root_selector": "results",
+          "columns": [
+            {
+              "selector": "0",
+              "text": "Time",
+              "type": "timestamp"
+            },
+            {
+              "selector": "1",
+              "text": "Trial Starts",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 39,
+  "version": 1,
+  "links": [],
+  "annotations": {
+    "list": [
+      {
+        "name": "App Releases",
+        "datasource": {
+          "type": "yesoreyeram-infinity-datasource",
+          "uid": "posthog"
+        },
+        "enable": true,
+        "iconColor": "green",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "install_source",
+        "label": "Install Source",
+        "type": "custom",
+        "current": {
+          "text": "All",
+          "value": "all"
+        },
+        "options": [
+          {
+            "text": "All",
+            "value": "all",
+            "selected": true
+          },
+          {
+            "text": "App Store",
+            "value": "app_store",
+            "selected": false
+          },
+          {
+            "text": "TestFlight",
+            "value": "testflight",
+            "selected": false
+          }
+        ],
+        "query": "all,app_store,testflight",
+        "includeAll": false,
+        "multi": false
+      }
+    ]
+  },
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "liveNow": false
+}

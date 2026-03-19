@@ -1,0 +1,11 @@
+apiVersion: 1
+datasources:
+  - name: Sentry
+    type: grafana-sentry-datasource
+    uid: sentry
+    access: proxy
+    jsonData:
+      url: https://de.sentry.io
+      orgSlug: alejandro-garcia
+    secureJsonData:
+      authToken: "${SENTRY_AUTH_TOKEN}"

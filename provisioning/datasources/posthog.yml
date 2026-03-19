@@ -1,0 +1,16 @@
+apiVersion: 1
+datasources:
+  - name: PostHog
+    type: yesoreyeram-infinity-datasource
+    uid: posthog
+    access: proxy
+    isDefault: true
+    jsonData:
+      allowedHosts:
+        - https://us.posthog.com
+      global_queries: []
+      customHealthCheckEnabled: false
+      auth_method: "bearerToken"
+      oauthPassThru: false
+    secureJsonData:
+      bearerToken: "${POSTHOG_API_KEY}"

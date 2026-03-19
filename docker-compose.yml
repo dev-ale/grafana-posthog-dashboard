@@ -1,0 +1,21 @@
+services:
+  grafana:
+    image: grafana/grafana:11.4.0
+    ports:
+      - "3030:3000"
+    environment:
+      - GF_INSTALL_PLUGINS=yesoreyeram-infinity-datasource,grafana-sentry-datasource
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/var/lib/grafana/dashboards/rcoon-overview.json
+      - POSTHOG_API_KEY=${POSTHOG_API_KEY}
+      - SENTRY_AUTH_TOKEN=${SENTRY_AUTH_TOKEN}
+    volumes:
+      - ./provisioning:/etc/grafana/provisioning
+      - ./dashboards:/var/lib/grafana/dashboards
+      - grafana-data:/var/lib/grafana
+    env_file:
+      - .env
+
+volumes:
+  grafana-data:
